@@ -1,0 +1,7 @@
+# Providers
+.terraform
+# Variables init
+terraform.tfvars
+
+# State
+.terraform.lock.hcl

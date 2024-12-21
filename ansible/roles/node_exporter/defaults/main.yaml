@@ -1,0 +1,9 @@
+---
+node_exporter_releases_url : https://github.com/prometheus/node_exporter/releases
+node_exporter_version : 1.8.2
+
+node_exporter_user: node_exporter
+node_exporter_home_path : /opt/node_exporter
+
+node_exporter_service_port : 9100
+...

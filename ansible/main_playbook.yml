@@ -5,4 +5,5 @@
   roles:
   - docker
   - postgresql
-...
+  - node_exporter
+... 

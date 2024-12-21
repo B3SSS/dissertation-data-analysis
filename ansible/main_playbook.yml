@@ -1,0 +1,8 @@
+---
+- name: Configure Postgres Infrastructure
+  hosts: all
+  become: true
+  roles:
+  - docker
+  - postgresql
+...

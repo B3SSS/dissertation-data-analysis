@@ -1,7 +1,14 @@
+### Terraform
 # Providers
 .terraform
 # Variables init
 terraform.tfvars
-
 # State
 .terraform.lock.hcl
+
+### Ansible
+ansible.cfg
+inventory.yaml
+
+### VS Code
+.vscode

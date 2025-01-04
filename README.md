@@ -1,6 +1,6 @@
 # Project "DataAnalysis" for dissertation
 
-#### Stack: Terraform, Ansible, Docker, PostgreSQL, Bash
+#### Stack: Terraform, Ansible, Docker, PostgreSQL, Python, Bash
 
 ### Add .terraformrc in user home directory
 ```
@@ -16,7 +16,19 @@ provider_installation {
 ```
 
 ### Plan
-```
-# execute command for initialization of terraform project and download dependencies
-terraform init 
+```bash
+# Execute command for initialization and installation of Terraform project and download dependencies
+cd terraform/
+terraform init
+terraform apply
+
+# Generate hosts.ini file for Ansible
+cd ansible/
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
+python3 gen_inventory.py
+
+# Start Ansible playbook
+ansible-playbook -i hosts.ini main_playbook.yaml
 ```

@@ -1,0 +1,5 @@
+---
+prometheus_image : prom/prometheus
+prometheus_image_version : v3.0.1
+prometheus_container_port : 9090
+...

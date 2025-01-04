@@ -5,10 +5,18 @@
 terraform.tfvars
 # State
 .terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
 
 ### Ansible
 ansible.cfg
-inventory.yaml
+inventory.*
+hosts.*
 
 ### VS Code
 .vscode
+
+### Python
+.venv
+.env
+venv

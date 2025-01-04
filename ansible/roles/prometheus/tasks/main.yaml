@@ -1,0 +1,14 @@
+---
+- name: Add prometheus user
+  ansible.builtin.user:
+    name: prometheus
+    home: /opt/prometheus
+    shell: /usr/bin/false
+
+
+
+- name: Starting Prometheus project
+  community.docker.docker_compose:
+    project_name: docker-compose.yaml
+    
+...

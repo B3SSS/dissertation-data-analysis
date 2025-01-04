@@ -1,0 +1,8 @@
+services:
+  prometheus:
+    container_name: prometheus
+    image: {{ prometheus_image }}:{{ prometheus_image_version }}
+    volumes:
+    - ...
+    ports:
+    - {{ prometheus_container_port }}:9090

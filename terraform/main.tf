@@ -106,10 +106,22 @@ resource "openstack_blockstorage_volume_v3" "volume_2" {
   enable_online_resize = true
 }
 
+# Описание публичного SSH ключа для ВМ 
+resource "selectel_vpc_keypair_v2" "keypair_1" {
+  name       = "my-unique-keypair-asdasdas"
+  public_key = file("~/.ssh/id_rsa.pub")
+  user_id    = var.selectel_user_id
+}
+
+output "keypair_name" {
+  value = selectel_vpc_keypair_v2.keypair_1.name
+}
+
 # Создание облачного сервера
 resource "openstack_compute_instance_v2" "postgresql-server" {
-  name              = "server"
+  name              = "postgresql1"
   flavor_id         = openstack_compute_flavor_v2.flavor_1.id
+  # key_pair          = selectel_vpc_keypair_v2.keypair_1.name
   availability_zone = "ru-9a"
   network {
     port = openstack_networking_port_v2.port.id
@@ -145,11 +157,6 @@ resource "openstack_networking_floatingip_associate_v2" "association_1" {
   floating_ip = openstack_networking_floatingip_v2.floatingip_1.address
 }
 
-
-
-# # Описание публичного SSH ключа для ВМ 
-# resource "selectel_vpc_keypair_v2" "keypair_1" {
-#   name       = "keypair"
-#   public_key = file("~/.ssh/id_rsa.pub")
-#   user_id    = var.selectel_user_id
-# }
+output "public_ip_address" {
+  value = openstack_networking_floatingip_v2.floatingip_1.address
+}

@@ -1,0 +1,7 @@
+---
+postgresql_exporter_version               : 0.16.0
+postgresql_exporter_url                   : https://github.com/prometheus-community/postgres_exporter/releases/download/v{{ postgresql_exporter_version }}/postgres_exporter-{{ postgresql_exporter_version }}.linux-amd64.tar.gz
+
+postgresql_exporter_directory             : /opt/postgresql_exporter
+postgresql_exporter_port                  : 9109
+...

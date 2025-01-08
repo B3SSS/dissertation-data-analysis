@@ -21,6 +21,4 @@
     name: postgresql
     state: started
     enabled: true
-
-# - ansible.builtin.include_tasks: db_user.yaml
 ...

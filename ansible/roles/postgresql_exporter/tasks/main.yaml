@@ -1,0 +1,44 @@
+---
+- name: Create postgresql_exporter directory
+  ansible.builtin.file:
+    path: "{{ postgresql_exporter_directory }}"
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: "0755"
+
+- name: Get postgresql_exporter archive
+  ansible.builtin.get_url:
+    url: "{{ postgresql_exporter_url }}"
+    dest: "{{ postgresql_exporter_directory }}/postgresql_exporter.tar.gz"
+    mode: "0755"
+
+- name: Unarchive postgresql_exporter tar file
+  ansible.builtin.unarchive:
+    src: "{{ postgresql_exporter_directory }}/postgresql_exporter.tar.gz"
+    dest: "{{ postgresql_exporter_directory }}/postgresql_exporter_file"
+
+- name: Copy postgresql_exporter bin file
+  ansible.builtin.copy:
+    src: "{{ postgresql_exporter_directory }}/postgresql_exporter_file/postgres_exporter"
+    dest: /bin/postgres_exporter
+
+- name: Copy postgresql_exporter env file
+  ansible.builtin.template:
+    src: postgres_exporter.env
+    dest: "{{ postgresql_exporter_directory }}/postgres_exporter.env"
+    owner: postgres
+    group: postgres
+
+- name: Copy postgresql_exporter service file
+  ansible.builtin.template:
+    src: postgres_exporter.service
+    dest: /etc/systemd/system/postgres_exporter.service
+
+- name: Enable and start postgresql_exporter
+  ansible.builtin.systemd:
+    name: postgres_exporter
+    state: started
+    enabled: true
+    daemon_reload: true
+...

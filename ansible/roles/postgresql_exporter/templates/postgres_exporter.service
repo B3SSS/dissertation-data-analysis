@@ -1,0 +1,15 @@
+[Unit]
+Description=Prometheus exporter for PostgreSQL
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=postgres
+Group=postgres
+WorkingDirectory={{ postgresql_exporter_directory }}
+EnvironmentFile={{ postgresql_exporter_directory }}/postgres_exporter.env
+ExecStart=/bin/postgres_exporter --web.listen-address={{ ansible_host }}:{{ postgresql_exporter_port }} --web.telemetry-path=/metrics
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

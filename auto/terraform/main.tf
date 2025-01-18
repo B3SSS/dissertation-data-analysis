@@ -102,7 +102,7 @@ resource "openstack_blockstorage_volume_v3" "volume_1" {
 # Создание дополнительного сетевого диска
 resource "openstack_blockstorage_volume_v3" "volume_2" {
   name = "additional-volume-for-server"
-  size = "7"
+  size = "20"
   enable_online_resize = true
 }
 
@@ -115,11 +115,11 @@ resource "openstack_compute_instance_v2" "postgresql-server" {
     #!/bin/bash
     LOG="/opt/terratest.log"
     apt update && apt upgrade -y >> $LOG
-    useradd -m -p $(perl -e 'print crypt($ARGV[0], "password")' 'ansible') -s /bin/bash ansible
+    useradd -m -d /home/ansible -p $(perl -e 'print crypt($ARGV[0], "password")' 'ansible') -s /bin/bash ansible
     mkdir /home/ansible/.ssh
     echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDgTYJRC+99GosRbYE1xakrr7VhBh1xzSnIKocmGYfd6JyOqSV9YmWtNOkRBXkAwfDZhBAEVGjJsDbwIHiYsxfjJ53R7VqC4o0zjc9okBMmpX34n2LOxrZ+7KDokriokgtwG0qTiN/uiD+8O09FF2RRSM0KuOYkANKdLQVl8RLHj6d0G4Elq3hQDxV8sR5SNFuUP+npsSkHx0HCPtEh14/zaYvgSPSwXL1TOI3yN7qZOJGOBK0Bvqwrwbkbn3ziRqwOef4uevY7we6hFMt1Q9rlB0dcKOdZ/gg1uSVYVQh8bd5QiC6inA2pEj3IEZKaB0oAkbCdNBv49LPvL85b8qA1xLNLDoOVwdsojQN1bCexPyJ4iqPqUhbGSkqmt/fGzA8YcLRb4vduf0H2d3i3KSdxI1BDDW5sRaWbChg20fBgb47DknlEBKtrzOGnwMuo7TDy2d/dSqyg/V1C8v4GMBtZ0qD8RSRj8cwpNd/6SxQVDsKiud0YI8ksqTxTdspgrCE= duvar@DESKTOP-QGLQVE0" >> /home/ansible/.ssh/authorized_keys
     chown -R ansible:ansible /home/ansible
-    echo "ansible  ALL=(ALL:ALL)  NOPASSWD: ALL" > /etc/sudoers.d/ansible.user
+    echo "ansible  ALL=(ALL:ALL)  NOPASSWD: ALL" > /etc/sudoers.d/ansible
     reboot
   EOF
   network {

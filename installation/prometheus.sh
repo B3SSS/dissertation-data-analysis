@@ -34,3 +34,4 @@ EOF
 
 systemctl daemon-reload
 systemctl enable --now prometheus.service
+systemctl status prometheus.service

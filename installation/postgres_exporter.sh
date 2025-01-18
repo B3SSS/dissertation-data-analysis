@@ -25,3 +25,4 @@ EOF
 
 systemctl daemon-reload
 systemctl enable --now postgres_exporter.service
+systemctl status postgres_exporter.service

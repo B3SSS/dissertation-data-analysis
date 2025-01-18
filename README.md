@@ -32,3 +32,10 @@ python3 gen_inventory.py
 # Start Ansible playbook
 ansible-playbook -i hosts.ini main_playbook.yaml
 ```
+
+
+### Import dashboards for Grafana
+```yaml
+node_exporter     : https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+postgres_exporter : https://grafana.com/grafana/dashboards/12485-postgresql-exporter/
+```

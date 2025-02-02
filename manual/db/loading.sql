@@ -30,21 +30,20 @@ TRUNCATE TABLE Dim_Vaccine RESTART IDENTITY CASCADE;
 
 -- 1. Заполнение таблиц измерений (Dim Tables)
 
--- Dim_Year
-INSERT INTO Dim_Year (year) VALUES (2020), (2021), (2022), (2023), (2024);
+INSERT INTO Dim_Year (year_id, year) VALUES (1, 2020), (2, 2021), (3, 2022), (4, 2023), (5, 2024);
 
 -- Dim_Month
-INSERT INTO Dim_Month (month) VALUES
-    ('Январь'), ('Февраль'), ('Март'), ('Апрель'), ('Май'), ('Июнь'),
-    ('Июль'), ('Август'), ('Сентябрь'), ('Октябрь'), ('Ноябрь'), ('Декабрь');
+INSERT INTO Dim_Month (month_id, month) VALUES
+    (1, 'Январь'), (2, 'Февраль'), (3, 'Март'), (4, 'Апрель'), (5, 'Май'), (6, 'Июнь'),
+    (7, 'Июль'), (8, 'Август'), (9, 'Сентябрь'), (10, 'Октябрь'), (11, 'Ноябрь'), (12, 'Декабрь');
 
 -- Dim_Week
-INSERT INTO Dim_Week (week)
-SELECT generate_series(1,53);
+INSERT INTO Dim_Week (week_id, week)
+SELECT generate_series(1,53), generate_series(1,53);
 
 -- Dim_DayOfWeek
-INSERT INTO Dim_DayOfWeek (dayOfWeek) VALUES
-    ('Понедельник'), ('Вторник'), ('Среда'), ('Четверг'), ('Пятница'), ('Суббота'), ('Воскресенье');
+INSERT INTO Dim_DayOfWeek (dayofweek_id, dayOfWeek) VALUES
+    (1, 'Пон'), (2, 'Вт'), (3, 'Ср'), (4, 'Чт'), (5, 'Пт'), (6, 'Суб'), (7, 'Вск');
 
 -- Dim_Time
 INSERT INTO Dim_Time (date, year_id, month_id, week_id, dayOfWeek_id)
@@ -57,83 +56,81 @@ SELECT
 FROM generate_series('2020-01-01'::date, '2024-12-31', '1 day') as date;
 
 -- Dim_Quarantine
-INSERT INTO Dim_Quarantine (quarantineType, numberOfDays) VALUES('Домашний', 14), ('Изоляция', 7), ('Обсервация', 21), ('Локдаун', 30);
+INSERT INTO Dim_Quarantine (quarantineid, quarantineType, numberOfDays) VALUES(1, 'Домашний', 14), (2, 'Изоляция', 7), (3, 'Обсервация', 21);
 
 -- Dim_Disease
-INSERT INTO Dim_Disease (diseaseName) VALUES
-    ('Грипп'), ('ОРВИ'), ('COVID-19'), ('Пневмония'), ('Бронхит'), ('Ангина'),
- ('COVID-19 Альфа'), ('COVID-19 Дельта'), ('COVID-19 Омикрон'), ('COVID-19 BA.5');
+INSERT INTO Dim_Disease (diseaseid, diseaseName) VALUES
+    (1, 'Грипп'), (2, 'ОРВИ'), (3, 'COVID-19'), (4, 'Пневмония'), (5, 'Бронхит'), (6, 'Ангина')
 
 -- Dim_DiseaseVariant
-INSERT INTO Dim_DiseaseVariant (diseaseId, variantName) VALUES
-    (3, 'Альфа'), (3, 'Бета'), (3, 'Гамма'), (3, 'Дельта'), (3, 'Омикрон'), (10, 'BA.5');
-
+INSERT INTO Dim_DiseaseVariant (variantid, diseaseId, variantName) VALUES
+    (1, 3, 'Альфа'), (2, 3, 'Бета'), (3, 3, 'Гамма'), (4, 3, 'Дельта'), (5, 3, 'Омикрон'), (6, 10, 'BA.5');
 
 -- Dim_PatientStatus
-INSERT INTO Dim_PatientStatus (patientStatusName) VALUES
-    ('Легкое течение'), ('Средне-тяжелое течение'), ('Тяжелое течение'), ('Госпитализирован'), ('Выписан'), ('Лечится дома'), ('Выздоровел'), ('Умер');
+INSERT INTO Dim_PatientStatus (patientstatusid, patientStatusName) VALUES
+    (1, 'Легкое течение'), (2, 'Средне-тяжелое течение'), (3, 'Тяжелое течение'), (4, 'Госпитализирован'), (5, 'Выписан'), (6, 'Лечится дома'), (7, 'Выздоровел'), (8, 'Умер');
 
 -- Dim_Venue
-INSERT INTO Dim_Venue (venueType, venueAddress) VALUES
-    ('Больница', 'ул. Ленина, 1'), ('Поликлиника', 'ул. Гагарина, 10'), ('Торговый центр', 'ул. Пушкина, 25'), ('Кинотеатр', 'ул. Островского, 50'),
- ('Школа', 'ул. Учительская, 2'), ('Ресторан', 'ул. Набережная, 15'), ('Стадион', 'ул. Спортивная, 10');
+INSERT INTO Dim_Venue (venueid, venueType, venueAddress) VALUES
+    (1, 'Больница', 'ул. Ленина, 1'), (2, 'Поликлиника', 'ул. Гагарина, 10'), (3, 'Торговый центр', 'ул. Пушкина, 25'), (4, 'Кинотеатр', 'ул. Островского, 50'),
+    (5, 'Школа', 'ул. Учительская, 2'), (6, 'Ресторан', 'ул. Набережная, 15'), (7, 'Стадион', 'ул. Спортивная, 10');
 
 -- Dim_DiseaseTest
-INSERT INTO Dim_DiseaseTest (diseaseTest) VALUES
-    ('ПЦР'), ('Антиген'), ('ИФА'), ('Общий анализ крови'), ('Тест на антитела');
+INSERT INTO Dim_DiseaseTest (diseasetestid, diseaseTest) VALUES
+    (1, 'ПЦР'), (2, 'Антиген'), (3, 'ИФА'), (4, 'Общий анализ крови'), (5, 'Тест на антитела');
 
 -- Dim_HealthUnit
-INSERT INTO Dim_HealthUnit (healthUnitName, address, districtId) VALUES
-    ('Больница №1', 'ул. Ленина, 1', 1),
- ('Поликлиника №1', 'ул. Гагарина, 10', 1),
-    ('Больница №2', 'ул. Космонавтов, 5', 2),
- ('Поликлиника №2', 'ул. Мира, 20', 2),
-    ('Больница №3', 'ул. Садовая, 20', 3),
-    ('Поликлиника №3', 'ул. Зеленая, 10', 3);
-
--- Dim_District
-INSERT INTO Dim_District (districtName, cityId) VALUES
-    ('Центральный', 1),
- ('Заводской', 1),
-    ('Советский', 2),
- ('Ленинский', 2),
-    ('Кировский', 3),
-    ('Октябрьский', 3);
+INSERT INTO Dim_HealthUnit (healthunitid, healthUnitName, address, districtId) VALUES
+    (1, 'Больница №1', 'ул. Ленина, 1', 1),
+ 	(2, 'Поликлиника №1', 'ул. Гагарина, 10', 1),
+    (3, 'Больница №2', 'ул. Космонавтов, 5', 2),
+ 	(4, 'Поликлиника №2', 'ул. Мира, 20', 2),
+    (5, 'Больница №3', 'ул. Садовая, 20', 3),
+    (6, 'Поликлиника №3', 'ул. Зеленая, 10', 3);
 
 -- Dim_City
-INSERT INTO Dim_City (cityName) VALUES
-    ('Москва'),
- ('Санкт-Петербург'),
-    ('Екатеринбург');
+INSERT INTO Dim_City (cityid, cityName) VALUES
+    (1, 'Москва'),
+ 	(2, 'Санкт-Петербург'),
+    (3, 'Екатеринбург');
 
+-- Dim_District
+INSERT INTO Dim_District (districtid, districtName, cityId) VALUES
+    (1, 'Центральный', 1),
+ 	(2, 'Заводской', 1),
+    (3, 'Советский', 2),
+ 	(4, 'Ленинский', 2),
+    (5, 'Кировский', 3),
+    (6, 'Октябрьский', 3);
 
 -- Dim_Drug
-INSERT INTO Dim_Drug (drugName, diseaseId) VALUES
-    ('Парацетамол', 1), ('Ибупрофен', 1), ('Азитромицин', 3), ('Амоксициллин', 4), ('Коделак', 5),
-     ('Ремдесивир', 7), ('Фавипиравир', 7), ('Молнупиравир', 7), ('Интерферон', 7),
-    ('Дексаметазон', 7);
+INSERT INTO Dim_Drug (drugid, drugName, diseaseId) VALUES
+    (1, 'Парацетамол', 1), (2, 'Ибупрофен', 1), (3, 'Азитромицин', 3), (4, 'Амоксициллин', 4), (5, 'Коделак', 5),
+    (6, 'Ремдесивир', 7), (7, 'Фавипиравир', 7), (8, 'Молнупиравир', 7), (9, 'Интерферон', 7), (10, 'Дексаметазон', 7);
 
 -- Dim_SignSymptom
-INSERT INTO Dim_SignSymptom (signSymptom) VALUES('Температура'), ('Кашель'), ('Насморк'), ('Боль в горле'), ('Слабость'), ('Одышка'), ('Потеря обоняния'),
-    ('Головная боль'), ('Ломота в теле'), ('Диарея'), ('Тошнота'), ('Рвота');
+INSERT INTO Dim_SignSymptom (signsymptomid, signSymptom) VALUES
+	(1, 'Температура'), (2, 'Кашель'), (3, 'Насморк'), (4, 'Боль в горле'), (5, 'Слабость'), 
+	(6, 'Одышка'), (7, 'Потеря обоняния'), (8, 'Головная боль'), (9, 'Ломота в теле'), (10, 'Диарея'),
+	(11, 'Тошнота'), (12, 'Рвота');
 
 -- Dim_Vaccine
-INSERT INTO Dim_Vaccine (vaccineName) VALUES
-    ('Спутник V'), ('КовиВак'), ('ЭпиВакКорона'), ('Pfizer'), ('Moderna'), ('AstraZeneca');
-
+INSERT INTO Dim_Vaccine (vaccineid, vaccineName) VALUES
+    (1, 'Спутник V'), (2, 'КовиВак'), (3, 'ЭпиВакКорона');
 
 -- 2. Заполнение таблицы Dim_Citizen
-INSERT INTO Dim_Citizen (name, surname, gender, dateOfBirth, weight, height, phoneNumber, address, districtId)
-SELECT
+INSERT INTO Dim_Citizen (citizenid, name, surname, gender, dateOfBirth, weight, height, phoneNumber, address, districtId)
+select
+	i, 
     'Имя' || i,
  'Фамилия' || i,
     CASE WHEN i % 2 = 0 THEN 'Мужской' ELSE 'Женский' END,
-    ('1940-01-01'::date + (random() * (365 * 80))::integer * '1 day'::interval), -- Случайная дата рождения за последние 80 лет
-    ROUND(random() * 70 + 50, 2), -- Случайный вес от 50 до 120 кг
-    ROUND(random() * 30 + 160, 2), -- Случайный рост от 160 до 190 см
- '79' ||  (random() * 1000000000)::int::text, --Случайный номер телефона, начинающийся на 79
+    ('1940-01-01'::date + (RANDOM() * (365 * 80))::integer * '1 day'::interval), -- Случайная дата рождения за последние 80 лет
+    ROUND(CAST(RANDOM() * 70 + 50 as NUMERIC), 2), -- Случайный вес от 50 до 120 кг
+    ROUND(CAST(RANDOM() * 30 + 160 as NUMERIC), 2), -- Случайный рост от 160 до 190 см
+ '79' ||  (RANDOM() * 1000000000)::int::text, --Случайный номер телефона, начинающийся на 79
  'Адрес' || i,
- (random() * 6 + 1)::int
+ (RANDOM() * 5 + 1)::int
 FROM generate_series(1, 10000000) as i;
 
 
@@ -146,137 +143,120 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Fact_CitizenQuarantine (меньше записей)
-\COPY (SELECT
+INSERT INTO Fact_CitizenQuarantine (citizenId, quarantineId, startDate, endDate)
+select distinct 
+    citizenId,
+    quarantineId,
+    startDate,
+    CASE
+        WHEN endDate < startDate THEN startDate
+        ELSE endDate
+    END AS endDate
+FROM (
+    SELECT DISTINCT
+        (random() * 9999999 + 1)::int AS citizenId,
+        (random() * 2 + 1)::int AS quarantineId,
+        random_date('2020-01-01', '2024-12-31') AS startDate,
+        random_date('2020-01-01', '2024-12-31') AS endDate
+    FROM generate_series(1, 12000000)
+) AS subquery;
+
+select count(*) from Fact_CitizenQuarantine;
+
+-- Fact_PatientDrug
+INSERT INTO Fact_PatientDrug (patientId, drugId, startDate, endDate, dose)
+select distinct 
+    patientId,
+    drugId,
+    startDate,
+    CASE
+        WHEN endDate < startDate THEN startDate
+        ELSE endDate
+    END AS endDate,
+    CASE WHEN random() > 0.5 THEN '1 таблетка' ELSE '2 таблетки' end as dose
+FROM (
+    SELECT DISTINCT
+        (random() * 9999999 + 1)::int AS patientId,
+        (random() * 9 + 1)::int AS drugId,
+        random_date('2020-01-01', '2024-12-31') AS startDate,
+        random_date('2020-01-01', '2024-12-31') AS endDate
+    FROM generate_series(1, 10000000)
+) AS subquery;
+
+select count(*) from Fact_PatientDrug;
+
+-- Fact_PatientSignSymptom
+INSERT INTO Fact_PatientSignSymptom (patientId, signSymptomId, startDate, endDate)
+select distinct 
+    patientId,
+    signSymptomId,
+    startDate,
+    CASE
+        WHEN endDate < startDate THEN startDate
+        ELSE endDate
+    END AS endDate
+FROM (
+    SELECT DISTINCT
+        (random() * 9999999 + 1)::int AS patientId,
+        (random() * 11 + 1)::int AS signSymptomId,
+        random_date('2020-01-01', '2024-12-31') AS startDate,
+        random_date('2020-01-01', '2024-12-31') AS endDate
+    FROM generate_series(1, 10000000)
+) AS subquery;
+
+select count(*) from Fact_PatientSignSymptom;
+
+-- Fact_Patient
+INSERT INTO Fact_Patient (patientId, diseaseId, date, patientStatusId)
+select distinct 
+    (random() * 9999999 + 1)::int AS patientId,
+    (random() * 5 + 1)::int AS diseaseId,
+    random_date('2020-01-01', '2024-12-31'),
+    (random() * 7 + 1)::int AS patientStatusId
+FROM generate_series(1, 10000000);
+
+select count(*) from Fact_Patient;
+
+-- Fact_CitizenVenues
+INSERT INTO Fact_CitizenVenues (citizenId, venueId, date)
+SELECT DISTINCT
+    (random() * 9999999 + 1)::int AS citizenId,
+    (random() * 6 + 1)::int AS venueId,
+    random_date('2020-01-01', '2024-12-31')
+FROM generate_series(1, 10000000);
+
+-- Fact_CitizenDiseaseTests
+INSERT INTO Fact_CitizenDiseaseTests (citizenId, diseaseTestId, date, healthUnitId, result)
+SELECT DISTINCT
     (random() * 9999999 + 1)::int,
     (random() * 4 + 1)::int,
     random_date('2020-01-01', '2024-12-31'),
-    random_date('2020-01-01', '2024-12-31')
-FROM generate_series(1, 10000000)
-    where random() < 0.3
-) TO 'fact_citizenquarantine.csv' WITH (FORMAT CSV);
-
-\echo 'Data for Fact_CitizenQuarantine exported, Starting import'
-COPY Fact_CitizenQuarantine(citizenId, quarantineId, startDate, endDate)
-FROM 'fact_citizenquarantine.csv'
-WITH (FORMAT CSV);
-\echo 'Data for Fact_CitizenQuarantine imported'
-
--- Fact_PatientDrug
-\COPY (SELECT
-    (random() * 9999999 + 1)::int,
-    (random() * 10 + 1)::int,
-    random_date('2020-01-01', '2024-12-31'),
- random_date('2020-01-01', '2024-12-31'),
- CASE WHEN random() > 0.5 THEN '1 таблетка' ELSE '2 таблетки' END
-FROM generate_series(1, 10000000)
-    where random() < 0.4
-) TO 'fact_patientdrug.csv' WITH (FORMAT CSV);
-
-\echo 'Data for Fact_PatientDrug exported, Starting import'
-COPY Fact_PatientDrug(patientId, drugId, startDate, endDate, dose)
-FROM 'fact_patientdrug.csv'
-WITH (FORMAT CSV);
-\echo 'Data for Fact_PatientDrug imported'
-
-
-
--- Fact_PatientSignSymptom
-\COPY (SELECT
-    (random() * 9999999 + 1)::int,
-    (random() * 12 + 1)::int,
-    random_date('2020-01-01', '2024-12-31'),
-    random_date('2020-01-01', '2024-12-31')
-FROM generate_series(1, 10000000)
-    where random() < 0.5
-) TO 'fact_patientsignsymptom.csv' WITH (FORMAT CSV);
-
-\echo 'Data for Fact_PatientSignSymptom exported, Starting import'
-COPY Fact_PatientSignSymptom(patientId, signSymptomId, startDate, endDate)
-FROM 'fact_patientsignsymptom.csv'
-WITH (FORMAT CSV);
-\echo 'Data for Fact_PatientSignSymptom imported'
-
--- Fact_Patient
-\COPY (SELECT
-    (random() * 9999999 + 1)::int,
-    (random() * 10 + 1)::int,
-     random_date('2020-01-01', '2024-12-31'),
- (random() * 8 + 1)::int
-FROM generate_series(1, 10000000)
-     where random() < 0.5
-) TO 'fact_patient.csv' WITH (FORMAT CSV);
-
-\echo 'Data for Fact_Patient exported, Starting import'
-COPY Fact_Patient(patientId, diseaseId, date, patientStatusId)
-FROM 'fact_patient.csv'
-WITH (FORMAT CSV);
-\echo 'Data for Fact_Patient imported'
-
-
--- Fact_CitizenVenues
-\COPY (SELECT
-    (random() * 9999999 + 1)::int,
-    (random() * 7 + 1)::int,
-     random_date('2020-01-01', '2024-12-31')
-FROM generate_series(1, 10000000)
-    where random() < 0.7
-) TO 'fact_citizenvenues.csv' WITH (FORMAT CSV);
-
-\echo 'Data for Fact_CitizenVenues exported, Starting import'
-COPY Fact_CitizenVenues(citizenId, venueId, date)
-FROM 'fact_citizenvenues.csv'
-WITH (FORMAT CSV);
-\echo 'Data for Fact_CitizenVenues imported'
-
--- Fact_CitizenDiseaseTests
-\COPY (SELECT
-    (random() * 9999999 + 1)::int,
     (random() * 5 + 1)::int,
-     random_date('2020-01-01', '2024-12-31'),
-    (random() * 6 + 1)::int,
-     CASE WHEN random() > 0.4 THEN 'Положительный' ELSE 'Отрицательный' END
-FROM generate_series(1, 10000000)
-    where random() < 0.7
-) TO 'fact_citizendiseasetests.csv' WITH (FORMAT CSV);
+    CASE WHEN random() > 0.4 THEN 'Положительный' ELSE 'Отрицательный' END
+FROM generate_series(1, 10000000);
 
-\echo 'Data for Fact_CitizenDiseaseTests exported, Starting import'
-COPY Fact_CitizenDiseaseTests(citizenId, diseaseTestId, date, healthUnitId, result)
-FROM 'fact_citizendiseasetests.csv'
-WITH (FORMAT CSV);
-\echo 'Data for Fact_CitizenDiseaseTests imported'
+SELECT COUNT(*) FROM Fact_CitizenDiseaseTests;
 
 -- Fact_CitizenVaccines
-\COPY (SELECT
+INSERT INTO Fact_CitizenVaccines (citizenId, vaccineId, date, healthUnitId)
+SELECT DISTINCT
     (random() * 9999999 + 1)::int,
- (random() * 6 + 1)::int,
+    (random() * 2 + 1)::int,
     random_date('2020-01-01', '2024-12-31'),
-    (random() * 6 + 1)::int
-FROM generate_series(1, 10000000)
-      where random() < 0.6
-) TO 'fact_citizenvaccines.csv' WITH (FORMAT CSV);
+    (random() * 9 + 1)::int
+FROM generate_series(1, 10000000);
 
-\echo 'Data for Fact_CitizenVaccines exported, Starting import'
-COPY Fact_CitizenVaccines(citizenId, vaccineId, date, healthUnitId)
-FROM 'fact_citizenvaccines.csv'
-WITH (FORMAT CSV);
-\echo 'Data for Fact_CitizenVaccines imported'
-
+SELECT COUNT(*) FROM Fact_CitizenVaccines;
 
 -- Dim_CitizenDrug
-\COPY (SELECT
+INSERT INTO Dim_CitizenDrug (citizenId, drugId, dose)
+SELECT DISTINCT
     (random() * 9999999 + 1)::int,
- (random() * 10 + 1)::int,
- CASE WHEN random() > 0\.5 THEN '1 таблетка' ELSE '2 таблетки' END
-FROM generate_series(1, 10000000)
-      where random() < 0.4
-) TO 'dim_citizendrug.csv' WITH (FORMAT CSV);
+    (random() * 9 + 1)::int,
+    CASE WHEN random() > 0.5 THEN '1 таблетка' ELSE '2 таблетки' END
+FROM generate_series(1, 10000000);
 
-\echo 'Data for Dim_CitizenDrug exported, Starting import'
-COPY Dim_CitizenDrug(citizenId, drugId, dose)
-FROM 'dim_citizendrug.csv'
-WITH (FORMAT CSV);
-\echo 'Data for Dim_CitizenDrug imported'
+SELECT COUNT(*) FROM Dim_CitizenDrug;
 
 -- Создание индексов на внешние ключи (для ускорения вставки)
 CREATE INDEX idx_fact_citizenquarantine_citizenid ON Fact_CitizenQuarantine (citizenId);

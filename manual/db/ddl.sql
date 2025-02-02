@@ -115,13 +115,13 @@ CREATE TABLE Dim_Vaccine (
 );
 
 -- Facts
-
 CREATE TABLE Fact_CitizenQuarantine (
     citizenId INTEGER REFERENCES Dim_Citizen(citizenId),
     quarantineId INTEGER REFERENCES Dim_Quarantine(quarantineId),
     startDate DATE REFERENCES Dim_Time(date),
     endDate DATE REFERENCES Dim_Time(date),
-    PRIMARY KEY (citizenId, quarantineId, startDate, endDate) -- Composite Primary Key
+    transactionTime DATE default now(),
+    PRIMARY KEY (citizenId, quarantineId, startDate, endDate, transactionTime) -- Composite Primary Key
 );
 
 CREATE TABLE Fact_PatientDrug (
@@ -130,7 +130,8 @@ CREATE TABLE Fact_PatientDrug (
     startDate DATE REFERENCES Dim_Time(date),
     endDate DATE REFERENCES Dim_Time(date),
     dose VARCHAR(50),
-    PRIMARY KEY (patientId, drugId, startDate) -- Composite Primary Key
+    transactionTime DATE default now(),
+    PRIMARY KEY (patientId, drugId, startDate, endDate, dose, transactionTime) -- Composite Primary Key
 );
 
 
@@ -139,7 +140,8 @@ CREATE TABLE Fact_PatientSignSymptom (
     signSymptomId INTEGER REFERENCES Dim_SignSymptom(signSymptomId),
     startDate DATE REFERENCES Dim_Time(date),
     endDate DATE REFERENCES Dim_Time(date),
-    PRIMARY KEY (patientId, signSymptomId, startDate) -- Composite Primary Key
+    transactionTime DATE default now(),
+    PRIMARY KEY (patientId, signSymptomId, startDate, endDate, transactionTime) -- Composite Primary Key
 );
 
 
@@ -148,7 +150,8 @@ CREATE TABLE Fact_Patient (
     diseaseId INTEGER REFERENCES Dim_Disease(diseaseId),
     date DATE REFERENCES Dim_Time(date),
     patientStatusId INTEGER REFERENCES Dim_PatientStatus(patientStatusId),
-    PRIMARY KEY (patientId, diseaseId, date) -- Composite Primary Key
+    transactionTime DATE default now(),
+    PRIMARY KEY (patientId, diseaseId, date, patientStatusId, transactionTime) -- Composite Primary Key
 );
 
 
@@ -156,7 +159,8 @@ CREATE TABLE Fact_CitizenVenues (
     citizenId INTEGER REFERENCES Dim_Citizen(citizenId),
     venueId INTEGER REFERENCES Dim_Venue(venueId),
     date DATE REFERENCES Dim_Time(date),
-    PRIMARY KEY (citizenId, venueId, date)
+    transactionTime DATE default now(),
+    PRIMARY KEY (citizenId, venueId, date, transactionTime)
 );
 
 CREATE TABLE Fact_CitizenDiseaseTests (
@@ -165,7 +169,8 @@ CREATE TABLE Fact_CitizenDiseaseTests (
     date DATE REFERENCES Dim_Time(date),
     healthUnitId INTEGER REFERENCES Dim_HealthUnit(healthUnitId),
     result VARCHAR(50),
-    PRIMARY KEY (citizenId, diseaseTestId, date)
+    transactionTime DATE default now(),
+    PRIMARY KEY (citizenId, diseaseTestId, date, healthUnitId, result, transactionTime)
 );
 
 
@@ -174,7 +179,8 @@ CREATE TABLE Fact_CitizenVaccines (
     vaccineId INTEGER REFERENCES Dim_Vaccine(vaccineId),
     date DATE REFERENCES Dim_Time(date),
     healthUnitId INTEGER REFERENCES Dim_HealthUnit(healthUnitId),
-    PRIMARY KEY (citizenId, vaccineId, date) -- Composite Primary Key
+    transactionTime DATE default now(),
+    PRIMARY KEY (citizenId, vaccineId, date, healthUnitId, transactionTime) -- Composite Primary Key
 );
 
 
@@ -182,5 +188,6 @@ CREATE TABLE Dim_CitizenDrug (
     citizenId INTEGER REFERENCES Dim_Citizen(citizenId),
     drugId INTEGER REFERENCES Dim_Drug(drugId),
     dose VARCHAR(50),
-    PRIMARY KEY (citizenId, drugId) -- Composite Primary Key
+    transactionTime DATE default now(),
+    PRIMARY KEY (citizenId, drugId, dose, transactionTime) -- Composite Primary Key
 );

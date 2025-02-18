@@ -20,3 +20,4 @@ hosts.*
 .venv
 .env
 venv
+__pycache__

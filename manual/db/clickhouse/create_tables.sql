@@ -26,24 +26,19 @@ CREATE TABLE analytics.aggregation_gender
 ) ENGINE = SummingMergeTree()
 ORDER BY gender;
 
-CREATE TABLE analytics.aggregation_covid_variant
-(
-	variant VARCHAR(10),
-	quantity UInt32
-) ENGINE = SummingMergeTree()
-ORDER BY variant;
-
 CREATE TABLE analytics.aggregation_sign_symptom
 (
-
-)
-;
+	symptom VARCHAR(30),
+	quantity UInt32,
+) ENGINE = SummingMergeTree()
+ORDER BY symptom;
 
 CREATE TABLE analytics.aggregation_city
 (
-
-)
-;
+	city VARCHAR(30),
+	quantity UInt32
+) ENGINE = SummingMergeTree()
+ORDER BY city;
 
 -- Drop all tables and database
 DROP TABLE IF EXISTS analytics.aggregation_age;
